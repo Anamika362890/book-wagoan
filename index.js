@@ -40,7 +40,23 @@ async function run() {
             const options = await productsCollection.find(query).toArray();
             res.send(options);
         })
+        app.get('/products/:id', async (req, res) => {
+            const id = req.params.id;
 
+            const query = { category_id: (id) };
+            const query2 = { service_id: (id) };
+            const category = await categoryCollection.findOne(query2);
+            const service = await productsCollection.find(query).toArray();
+            for (let i = 0; i < service.length; i++) {
+                service[i].category_id = category.name;
+                console.log(service.category);
+            }
+            console.log(service);
+            console.log("categot")
+            console.log(category.name);
+            res.send(service);
+
+        })
 
 
 
