@@ -27,9 +27,9 @@ async function run() {
 
         app.get('/booking', async (req, res) => {
             const email = req.query.email;
-            const query = { email: email };
-            const bookings = await bookingsCollection.find(query).toArray();
-            res.send(bookings);
+            const query = { buyer_email: email };
+            const booking = await bookingsCollection.find(query).toArray();
+            res.send(booking);
 
         })
 
@@ -59,11 +59,13 @@ async function run() {
             res.send(result);
         })
 
+
         app.get('/products', async (req, res) => {
             const query = {};
             const options = await productsCollection.find(query).toArray();
             res.send(options);
         })
+
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
 
