@@ -22,10 +22,25 @@ async function run() {
         const productsCollection = client.db('bookWagon').collection('products');
         const usersCollection = client.db('bookWagon').collection('users');
 
+        const bookingsCollection = client.db('bookWagon').collection('booking');
+
+        app.post('/booking', async (req, res) => {
+            const user = req.body;
+            const result = await bookingsCollection.insertOne(user);
+            res.send(result);
+        })
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
+        })
+
+
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const options = await usersCollection.find(query).toArray();
+            res.send(options);
         })
 
 
@@ -51,9 +66,9 @@ async function run() {
                 service[i].category_id = category.name;
                 console.log(service.category);
             }
-            console.log(service);
-            console.log("categot")
-            console.log(category.name);
+            // console.log(service);
+
+            // console.log(category.name);
             res.send(service);
 
         })
