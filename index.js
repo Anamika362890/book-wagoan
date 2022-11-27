@@ -24,6 +24,15 @@ async function run() {
 
         const bookingsCollection = client.db('bookWagon').collection('booking');
 
+
+        app.get('/booking', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
+
+        })
+
         app.post('/booking', async (req, res) => {
             const user = req.body;
             const result = await bookingsCollection.insertOne(user);
