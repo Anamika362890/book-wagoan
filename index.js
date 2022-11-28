@@ -42,18 +42,29 @@ async function run() {
 
         app.get('/booking', verifyJWT, async (req, res) => {
             const email = req.query.email;
-
-
             const decodedEmail = req.decoded.email;
             if (email !== decodedEmail) {
                 return res.send(403).send({ message: 'Forbidden' })
             }
-
             const query = { buyer_email: email };
             const booking = await bookingsCollection.find(query).toArray();
             res.send(booking);
 
         })
+        ///
+
+        app.get('/lproducts', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const decodedEmail = req.decoded.email;
+            if (email !== decodedEmail) {
+                return res.send(403).send({ message: 'Forbidden' })
+            }
+            const query = { email: email };
+            const booking = await productsCollection.find(query).toArray();
+            res.send(booking);
+
+        })
+        //
 
         app.post('/booking', async (req, res) => {
             const user = req.body;
