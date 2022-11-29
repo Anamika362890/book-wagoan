@@ -101,7 +101,7 @@ async function run() {
 
         })
 
-        app.delete('/sellers/:id', async (req, res) => {
+        app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
 
@@ -116,6 +116,14 @@ async function run() {
             const query = { role: "Buyer" };
             const options = await usersCollection.find(query).toArray();
             res.send(options);
+
+        })
+
+        app.delete('/buyers/:id', async (req, res) => {
+            const id = req.params.id;
+            const Bfilter = { _id: ObjectId(id) };
+            const Bresult = await usersCollection.deleteOne(Bfilter);
+            res.send(Bresult);
 
         })
 
