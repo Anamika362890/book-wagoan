@@ -44,7 +44,7 @@ async function run() {
             const email = req.query.email;
             const decodedEmail = req.decoded.email;
             if (email !== decodedEmail) {
-                return res.send(403).send({ message: 'Forbidden' })
+                return res.status(403).send({ message: 'Forbidden' })
             }
             const query = { buyer_email: email };
             const booking = await bookingsCollection.find(query).toArray();
@@ -57,14 +57,14 @@ async function run() {
             const email = req.query.email;
             const decodedEmail = req.decoded.email;
             if (email !== decodedEmail) {
-                return res.send(403).send({ message: 'Forbidden' })
+                return res.status(403).send({ message: 'Forbidden' })
             }
             const query = { email: email };
             const booking = await productsCollection.find(query).toArray();
             res.send(booking);
 
         })
-        //
+
 
         app.post('/booking', async (req, res) => {
             const user = req.body;
@@ -100,6 +100,16 @@ async function run() {
             res.send(options);
 
         })
+
+        app.delete('/sellers/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+
+        })
+
 
         app.get('/buyers', async (req, res) => {
             const role = req.query.role;
@@ -137,6 +147,9 @@ async function run() {
             res.send(result);
 
         })
+
+
+
 
 
 
