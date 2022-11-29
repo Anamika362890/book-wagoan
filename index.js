@@ -160,6 +160,33 @@ async function run() {
 
 
 
+        app.put('/users/verify/:id', async (req, res) => {
+
+            // const decodedEmail = req.decoded.email;
+            // const query = { email: decodedEmail };
+            // const user = await usersCollection.findOne(query);
+            // if (user?.admin !== 'admin') {
+            //     return res.status(403).send({ message: 'forbidden access' })
+            // }
+
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    status: 'verified'
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+
+        })
+
+
+
+
+
+
 
         app.post('/products', async (req, res) => {
             const product = req.body;
@@ -172,6 +199,15 @@ async function run() {
             const query = {};
             const options = await productsCollection.find(query).toArray();
             res.send(options);
+        })
+
+
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const productsfilter = { _id: ObjectId(id) };
+            const productResult = await productsCollection.deleteOne(productsfilter);
+            res.send(productResult);
+
         })
 
         app.get('/products/:id', async (req, res) => {
